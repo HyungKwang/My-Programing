@@ -1,0 +1,9 @@
+[ONYX]
+NVIDIA.test.labs 
+ 
+[ONYX:vars]
+ansible_network_os=onyx
+ansible_become=yes
+ansible_become_method=enable
+ansible_ssh_user=admin
+ansible_ssh_pass=admin
