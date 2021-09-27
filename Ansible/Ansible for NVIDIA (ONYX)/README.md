@@ -43,8 +43,7 @@ ansible_ssh_pass=admin
       register: add_license
 ```
 
-  2. Place images under /root/
-    - image-X86_64-3.6.2102.img, image-X86_64-3.6.6162.img, image-X86_64-3.6.8008.img, image-X86_64-3.6.8010.img
+  2. Place images under /root/image-X86_64-3.6.2102.img, image-X86_64-3.6.6162.img, image-X86_64-3.6.8008.img, image-X86_64-3.6.8010.img
        
 > From "OS_Up_downgrade.yml"     
 
