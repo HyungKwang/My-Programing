@@ -94,8 +94,6 @@
           mode: binary
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
-      vars:
-        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
@@ -239,8 +237,6 @@
           mode: binary
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
-      vars:
-        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
@@ -383,8 +379,6 @@
           mode: binary
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
-      vars:
-        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
@@ -533,8 +527,6 @@
           mode: binary
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
-      vars:
-        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
