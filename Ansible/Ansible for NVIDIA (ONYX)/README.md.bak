@@ -14,7 +14,7 @@
 
 ## How to run
 
- ### Modify & Plance images under /root
+ ### 2 scripts
   1. You need to modify 2things properly : OS_Up_Downgrade.yml and hosts.
 
 > From "hosts"
@@ -22,7 +22,7 @@
 ```
 [root@NVIDIA ~]# cat /etc/ansible/hosts 
 [ONYX]
-NVIDIA.test.labs     <==== modify properly.
+NVIDIA.test.labs <==== modify properly.
 [ONYX:vars]
 ansible_network_os=onyx
 ansible_become=yes
@@ -42,24 +42,6 @@ ansible_ssh_pass=admin
               - license install XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
       register: add_license
 ```
-
-  2. Place images under /root/
-    - image-X86_64-3.6.2102.img, image-X86_64-3.6.6162.img, image-X86_64-3.6.8008.img, image-X86_64-3.6.8010.img
-       
-> From "OS_Up_downgrade.yml"     
-
-
-```
-      ansible_network_os: onyx
-      user: admin
-      password: admin
-      transfer_protocol: scp
-      source_file: "/root/image-X86_64-{{ version3 }}.img"  <==============
-      destination_folder: /var/opt/tms/images/ 
-    remote_user: admin
-
-```
-     
 
  ### How to run
 
