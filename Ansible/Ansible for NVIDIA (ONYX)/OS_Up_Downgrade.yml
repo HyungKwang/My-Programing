@@ -95,7 +95,7 @@
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
       vars:
-        ansible_command_timeout: 800
+        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
@@ -240,7 +240,7 @@
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
       vars:
-        ansible_command_timeout: 800
+        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
@@ -384,7 +384,7 @@
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
       vars:
-        ansible_command_timeout: 800
+        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
@@ -534,7 +534,7 @@
           protocol: "{{ transfer_protocol }}"
           src: "{{ source_file }}"
       vars:
-        ansible_command_timeout: 800
+        ansible_command_timeout: 1200
       tags: copy_to_onyx
 
 
