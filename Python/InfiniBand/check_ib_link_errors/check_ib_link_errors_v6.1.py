@@ -4,11 +4,17 @@
 # Author: <.....> , HyungKwang Choi
 # Software: Python 3.8+, Pandas and OpenPyXL Libraries
 # Revision:
-# v1 : 7/29/2021 modified by  <....>
-# v2 : 3/15/2022 modified by HyungKwang Choi (Fixed script bug (FEC Uncorrectable))
-# v3 : 4/14/2022 modified by HyungKwang Choi (Fixed script bug (Symbol BER/Err))
-# v4 : 4/30/2022 modified by HyungKwang Choi (Modifying BER threshold from ‘1e-12’ to ‘1e-13’)
-# v5 : 5/1/2022 modified by HyungKwang Choi  (Added "Max Retransmission_rate")
+# v1  : 7/29/2021  modified by  <....>
+# v2  : 3/15/2022  modified by HyungKwang Choi (Fixed script bug (FEC Uncorrectable))
+# v3  : 4/14/2022  modified by HyungKwang Choi (Fixed script bug (Symbol BER/Err))
+# v4  : 4/30/2022  modified by HyungKwang Choi (Modifying BER threshold from ‘1e-12’ to ‘1e-13’)
+# v5  : 5/1/2022   modified by HyungKwang Choi  (Added "Max Retransmission_rate")
+# v5.1: 5/11/2022  modified by HyungKwang Choi  (modifed "Running command" parsing code)
+# v6.1: 5/13/2022  modified by HyungKwang Choi & Sam (In the Ibdiagnet "2.8.1", ibdiagnet2_db.csv files , data written like "-1". Which triggers an exception such as) "PortXmitWaitExt = -1")
+#==================================================================================
+
+##############Troubleshoot syntax###########################
+#  df_pm.to_csv("before") 
 # =============================================================================
 
 import argparse
@@ -200,8 +206,16 @@ ibdgnt_log = args.ibdiagnet_folder + "/ibdiagnet2.log"
 if os.path.isfile(ibdgnt_log):
 
     with open(ibdgnt_log, "r", encoding="utf-8", errors="ignore") as log_file:
-        running_command = log_file.readlines()
-        running_command_only = running_command[0]
+
+        while True:
+            running_command_only = log_file.readline()
+        
+            if "Running command:"  in running_command_only : break
+            if "Running:"  in running_command_only : break
+
+    #    running_command = log_file.readlines()
+    #    print(running_command)
+    #    running_command_only = running_command[0]
 
         print('\n{} '.format(running_command_only) )
     
@@ -367,12 +381,21 @@ if not df_pm.empty:
 
     df_pm["PortXmitWaitExt"] = df_pm["PortXmitWaitExt"].apply(int, base=16)
     df_pm["PortXmitPktsExtended"] = df_pm["PortXmitPktsExtended"].apply(int, base=16)
+
+    #df_pm.to_csv("Congested_Links")
+  
+
     try:
+        # In the Ibdiagnet "2.8.1", ibdiagnet2_db.csv files , data written like "-1". Which triggers an exception such as) "PortXmitWaitExt = -1"
+ 
+
         df_pm["CongestionIndexExt"] = (
-            df_pm["PortXmitWaitExt"] / df_pm["PortXmitPktsExtended"]
+         df_pm["PortXmitWaitExt"] / df_pm["PortXmitPktsExtended"]
         )
-    except ZeroDivisionError:  
+    
+    except ZeroDivisionError:
         df_pm["CongestionIndexExt"] = 0
+
     df_pm["CongestionIndexExt"] = df_pm["CongestionIndexExt"].round(2)
 
     df_congestion_ext = df_pm[df_pm["CongestionIndexExt"] >= 10]
