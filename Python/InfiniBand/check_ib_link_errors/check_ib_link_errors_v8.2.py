@@ -12,8 +12,8 @@
 # v5.1: 5/11/2022  modified by HyungKwang Choi  (modifed "Running command" parsing code)
 # v6.1: 5/13/2022  modified by HyungKwang Choi & Sam (In the Ibdiagnet "2.8.1", ibdiagnet2_db.csv files , data written like "-1". Which triggers an exception such as) "PortXmitWaitExt = -1")
 # v6.2: 5/26/2022  modified by HyungKwang Choi added the lib "is_integer_dtype" which help to distingush PortXmitWaitExt data Int and Hex 
-# v7.2: 5/26/2022  modified by HyungKwang Choi added "Lost Bandwitdh"
-# v8.2: 5/26/2022  modified by HyungKwang Choi added "Raw BER"
+# v7.2: 6/2/2022  modified by HyungKwang Choi added "Lost Bandwitdh"
+# v8.2: 6/8/2022  modified by HyungKwang Choi added "Raw BER"
 #==================================================================================
 
 ##############Troubleshoot syntax###########################
