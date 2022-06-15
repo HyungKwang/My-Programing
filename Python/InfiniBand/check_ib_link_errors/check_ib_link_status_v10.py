@@ -82,9 +82,6 @@ def db_csv_extr(separator, ibdgnt_db_csv_file):
 
     regexp_result = re.search(regexp, ibdgnt_db_csv_file)
     
-    #print(regexp_result)
-    #print(pd.read_csv(io.StringIO(regexp_result.group(1))))
-
     if regexp_result:
         return pd.read_csv(io.StringIO(regexp_result.group(1)), low_memory=False)
     else:
@@ -96,8 +93,6 @@ def net_ext_extr(ibdgnt_net_ext_file):
     """
     Extract data from ibdiagnet2.net_dump_ext
     """
-
-    # Skip commented lines
 
     regexp = re.compile(r"(Ty.*)", re.DOTALL)
 
@@ -222,7 +217,10 @@ def lnk_tbl_extr(ibdgnt_net_file):
     return df_full_lnk_tbl
 
 
-# Step 0. Display Runnig command
+"""
+    # Step 1. Display Runnig command
+    #print("\nStart to parse ibdiagnet2.net_dump ...")
+"""
 
 ibdgnt_log = args.ibdiagnet_folder + "/ibdiagnet2.log"
 
@@ -247,9 +245,12 @@ else:
     print("\nCouldn't find ibdiagnet2.log. Existing ...")
     exit()
 
-# Step 1. Load ibdiagnet2.net_dump
 
-#print("\nStart to parse ibdiagnet2.net_dump ...")
+
+"""
+    # Step 2. Load ibdiagnet2.net_dump
+    #print("\nStart to parse ibdiagnet2.net_dump ...")
+"""
 
 ibdgnt_net = args.ibdiagnet_folder + "/ibdiagnet2.net_dump"
 
@@ -264,9 +265,12 @@ else:
     print("\nCouldn't find ibdiagnet2.net_dump. Existing ...")
     exit()
 
-# Step 2. Load ibdiagnet2.db_csv
 
-#print("\nStart to parse ibdiagnet2.db_csv ...")
+"""
+    # Step 3. Load ibdiagnet2.db_csv
+    #print("\nStart to parse ibdiagnet2.db_csv ...")
+"""
+
 
 ibdgnt_db = args.ibdiagnet_folder + "/ibdiagnet2.db_csv"
 
@@ -278,15 +282,15 @@ if os.path.isfile(ibdgnt_db):
     # Extract PM CSV table from ibdiagnet2.db_csv
 
     df_pm = db_csv_extr("PM_INFO", db_csv)
-    #print(df_pm.iloc[:,[43]])
-
+ 
 else:
     print("\nCouldn't find ibdiagnet2.db_csv. Existing ...")
     exit()
 
-# Step 3. Load ibdiagnet2.net_dump_ext
-
-#print(f"\nStart to parse ibdiagnet2.net_dump_ext ...")
+"""
+    # Step 4. Load ibdiagnet2.net_dump_ext
+    #print(f"\nStart to parse ibdiagnet2.net_dump_ext ...")
+"""
 
 ibdgnt_net_ext = args.ibdiagnet_folder + "/ibdiagnet2.net_dump_ext"
 
@@ -301,7 +305,9 @@ else:
     print(f"\n\nCouldn't find ibdiagnet2.net_dump_ext. Existing ...")
     exit()
 
-# Step 4. Check PM counters
+"""
+    # Step 5. Check PM counters
+"""
 
 if not df_pm.empty:
 
@@ -324,13 +330,13 @@ if not df_pm.empty:
     )
 
 
-    # 4.1 LinkDownedCounter
+    # 5.1 LinkDownedCounter
 
     df_pm = df_pm[df_pm["LWA"] != ""]
     df_pm = df_pm[df_pm["LSA"] != ""]
 
 
-    if "--extended_speeds all" in running_command_only :   # extended speed 없을때 PortRcvDataExtended 이렇게 값이 저장되는지 확인해보기
+    if "--extended_speeds all" in running_command_only :    
         pm_cols = [
             "SrcDevice",
             "SrcPort",
@@ -390,7 +396,7 @@ if not df_pm.empty:
     ]
     df_lnk_dn = df_lnk_dn.sort_values(by="LinkDownedCounter", ascending=False)
 
-    # 4.2 PortXmitDiscards
+    # 5.2 PortXmitDiscards
 
     df_xmit_drp = df_pm[df_pm["PortXmitDiscards"] > 0]
     df_xmit_drp = df_xmit_drp[
@@ -398,7 +404,7 @@ if not df_pm.empty:
     ]
     df_xmit_drp = df_xmit_drp.sort_values(by="PortXmitDiscards", ascending=False)
 
-    # 4.3 PortFECUncorrectableBlockCounter
+    # 5.3 PortFECUncorrectableBlockCounter
  
 
     if "extended_speeds" in running_command_only :
@@ -410,7 +416,7 @@ if not df_pm.empty:
             by="PortFECUncorrectableBlockCounter", ascending=False
         )
 
-    # 4.4 ExcessiveBufferOverrunErrors
+    # 5.4 ExcessiveBufferOverrunErrors
 
     df_buf_overrun = df_pm[df_pm["ExcessiveBufferOverrunErrors"] != 0]
     df_buf_overrun = df_buf_overrun[
@@ -419,22 +425,20 @@ if not df_pm.empty:
     df_buf_overrun = df_buf_overrun.sort_values(
         by="ExcessiveBufferOverrunErrors", ascending=False
     )
-
-       
-
-    
-    #print(df_pm[df_pm["PortXmitWaitExt"] == '0xfffffffffffffffe'])
+     
+    """
+     Old FDR or SX6710 does not support PortXmitWaitExt. so writes unrealistic value '0xfffffffffffffffe' to ibdiagnet2.db_csv
+    ("unsupported extended counters (in older FDR device and old SX6710 GW device))
+    So for that, below code needed.
+     
+    """  
     df_pm["PortXmitWaitExt"].replace('0xfffffffffffffffe', '0x0000000000000000', inplace=True) 
     
-    
-    #print(df_pm[df_pm["PortXmitWaitExt"] == '0xfffffffffffffffe']) 
-    
-    
+       
     
     if (not is_integer_dtype(df_pm["PortXmitWaitExt"])) : 
 
-    #    df_pm["PortXmitWaitExt"] = df_pm["PortXmitWaitExt"].replace('0xfffffffffffffffe', '0x0000000000000000', inplace=True) 
-        
+
 
         df_pm["PortXmitWaitExt"] = df_pm["PortXmitWaitExt"].apply(int, base=16)
         df_pm["PortXmitPktsExtended"] = df_pm["PortXmitPktsExtended"].apply(int, base=16)
@@ -455,10 +459,9 @@ if not df_pm.empty:
         """
   
   
-    # 4.5 CongestionIndex
+    # 5.5 CongestionIndex
     try:
         # In the Ibdiagnet "2.8.1", ibdiagnet2_db.csv files , data written like "-1". Which triggers an exception such as) "PortXmitWaitExt = -1"
- 
 
         df_pm["CongestionIndexExt"] = (
          df_pm["PortXmitWaitExt"] / df_pm["PortXmitPktsExtended"]
@@ -467,7 +470,6 @@ if not df_pm.empty:
     except ZeroDivisionError:
         df_pm["CongestionIndexExt"] = 0
 
-   # df_pm["CongestionIndexExt"] = df_pm["CongestionIndexExt"].astype({'CongestionIndexExt':'int'})
 
     df_pm["CongestionIndexExt"] = df_pm["CongestionIndexExt"].round(2)
     df_congestion_ext = df_pm[df_pm["CongestionIndexExt"] >= 10]
@@ -479,8 +481,8 @@ if not df_pm.empty:
         by="CongestionIndexExt", ascending=False
     )
 
-    # 4.6 max_retransmission_rate (threshold 500)
-    df_pm["max_retransmission_rate"] = df_pm["max_retransmission_rate"].apply(int, base=16) #to convert hex (0x0000) to int    
+    # 5.6 max_retransmission_rate (threshold 500)
+    df_pm["max_retransmission_rate"] = df_pm["max_retransmission_rate"].apply(int, base=16)      #to convert hex 16 digits (0x0000) to int   
 
     df_max_retrans = df_pm[df_pm["max_retransmission_rate"] > 500]
     df_max_retrans = df_max_retrans[
@@ -490,16 +492,13 @@ if not df_pm.empty:
         by="max_retransmission_rate", ascending=False
     )   
 
-
-
-
     if "--pm_pause_time" in running_command_only :
             pm_pause_time = running_command_only.split()
 
             index = pm_pause_time.index("--pm_pause_time")
             pm_pause_time_value = int(pm_pause_time[index + 1])
     
-    # 4.7 Lost BandWidth
+    # 5.7 Lost BandWidth
 
             df_pm["Lost_Bandwidth(Gbps)"] = ( 
                 df_pm["PortXmitWaitExt"] * 64 / (pm_pause_time_value * 1024 * 1024 * 1024)
@@ -510,7 +509,13 @@ if not df_pm.empty:
             df_pm = df_pm.dropna(how='any')
             df_pm = df_pm.astype({'LWA':'float', 'LSA':'float'})        
 
-    # 4.8 Congestion BW percentage.
+    ###Congestion BW percentage.
+            """
+             Below for new feature "Congestion BW percentage." in the feature. But in current version this feature is not implemented. 
+             just logic added. and the logic works. but not displays.
+     
+            """  
+    
             df_pm["Link_active_speed"] = ( 
                 df_pm["LWA"] * df_pm["LSA"] 
             )
@@ -518,15 +523,9 @@ if not df_pm.empty:
             df_pm["Congestion_BW_Percentage"] =  ( 
                 (df_pm["Lost_Bandwidth(Gbps)"] * 100) / 64 * df_pm["LWA"] * df_pm["LSA"]
             )
- 
      
-
-
-     
-
-    # 4.8 Recevie & Transmit Bandwidth
+    ###Recevie & Transmit Bandwidth
     
-        #    print(df_pm[df_pm["PortRcvDataExtended"] == '0xfffffffffffffffe'])   
             df_pm["PortRcvData"] = df_pm["PortRcvData"].apply(lambda x : format(x,"#018x"))
             df_pm["PortRcvData"] = df_pm["PortRcvData"].astype('object')
       
@@ -535,19 +534,10 @@ if not df_pm.empty:
             df_pm["PortXmitData"] = df_pm["PortXmitData"].astype('object')
                                        
             if (not is_integer_dtype(df_pm["PortRcvDataExtended"])) : 
-
-            #    print(df_pm.dtypes)
-                                
-            #    print("또ㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗㅗ==============")   
-                   
-             #   print(df_pm[df_pm["PortRcvDataExtended"] == '0xfffffffffffffffe'])         
                                 
                 mask = df_pm["PortRcvDataExtended"] == '0xfffffffffffffffe'
                 df_pm.loc[mask, 'PortRcvDataExtended'] = df_pm.loc[mask, 'PortRcvData'] 
                 
-                
-              #  print("여기==============")   
-              #  print(df_pm[df_pm["PortRcvDataExtended"] == '0xfffffffffffffffe'])           
                 df_pm["PortRcvDataExtended"] = df_pm["PortRcvDataExtended"].apply(int, base=16)
 
             if (not is_integer_dtype(df_pm["PortXmitDataExtended"])) : 
@@ -555,7 +545,6 @@ if not df_pm.empty:
                 mask = df_pm["PortXmitDataExtended"] == '0xfffffffffffffffe'
                 df_pm.loc[mask, 'PortXmitDataExtended'] = df_pm.loc[mask, 'PortXmitData'] 
  
-                            
                 df_pm["PortXmitDataExtended"] = df_pm["PortXmitDataExtended"].apply(int, base=16)
 
             df_pm["PortRcvDataExtended(Gbps)"] = ( 
@@ -565,7 +554,6 @@ if not df_pm.empty:
             df_pm["PortXmitDataExtended(Gbps)"] = ( 
                 df_pm["PortXmitDataExtended"] * 32 / (pm_pause_time_value * 1024 * 1024 * 1024)
             )
-
 
             df_pm["PortRcvDataExtended(Gbps)"]  = df_pm["PortRcvDataExtended(Gbps)"] .round(2)
             df_pm["PortXmitDataExtended(Gbps)"]  = df_pm["PortXmitDataExtended(Gbps)"] .round(2)
@@ -581,7 +569,7 @@ if not df_pm.empty:
 
 
 
-        #(Tier1 & Tier4) Switch -> Servers By RX Bandwidth (Gbps)
+        #5.8 (Tier1 & Tier4) Switch -> Servers By RX Bandwidth (Gbps)
             df_Server_Rx_Bandwidth = df_Server_Rx_Bandwidth[
             ["DstDevice", "DstPort", "DstGUID", "PortRcvDataExtended(Gbps)","Lost_Bandwidth(Gbps)", "SrcDevice", "SrcPort", "SrcGUID"]
             ]      
@@ -602,7 +590,7 @@ if not df_pm.empty:
             df_Server_Rx_Bandwidth = df_Server_Rx_Bandwidth.sort_values(by="Lost_Bandwidth(Gbps)", ascending=False)
        
    
-        #(Tier1 & Tier4) Servers -> Switch By TX Bandwidth (Gbps)
+        #5.9 (Tier1 & Tier4) Servers -> Switch By TX Bandwidth (Gbps)
             df_Server_Tx_Bandwidth = df_Server_Tx_Bandwidth[
             ["SrcDevice", "SrcPort", "SrcGUID", "PortXmitDataExtended(Gbps)","Lost_Bandwidth(Gbps)" , "DstDevice", "DstPort", "DstGUID" ]
             ]      
@@ -619,7 +607,7 @@ if not df_pm.empty:
 
  
 
-        #(Tier2 & Tier3) Switch <-> Switch By RX Bandwidth (Gbps)
+        #5.10 (Tier2 & Tier3) Switch <-> Switch By RX Bandwidth (Gbps)
             df_Switch_Rx_Bandwidth = df_Switch_Rx_Bandwidth[
             [ "SrcDevice", "SrcPort", "SrcGUID","PortRcvDataExtended(Gbps)","Lost_Bandwidth(Gbps)" , "DstDevice", "DstPort", "DstGUID",]
             ]      
@@ -634,7 +622,7 @@ if not df_pm.empty:
 
             df_Switch_Rx_Bandwidth = df_Switch_Rx_Bandwidth.sort_values(by="Lost_Bandwidth(Gbps)", ascending=False)
        
-        #(Tier2 & Tier3) Switch <-> Switch By TX Bandwidth (Gbps)
+        #5.11 (Tier2 & Tier3) Switch <-> Switch By TX Bandwidth (Gbps)
             df_Switch_Tx_Bandwidth = df_Switch_Tx_Bandwidth[
             [ "SrcDevice", "SrcPort", "SrcGUID","PortXmitDataExtended(Gbps)","Lost_Bandwidth(Gbps)" , "DstDevice", "DstPort", "DstGUID",]
             ]      
@@ -650,7 +638,7 @@ if not df_pm.empty:
             df_Switch_Tx_Bandwidth = df_Switch_Tx_Bandwidth.sort_values(by="Lost_Bandwidth(Gbps)", ascending=False)
        
      
-         # Delcaring lost_BW DataFrame.
+         ### "5.7 Lost BandWidth" logic implemented here
   
             df_Lost_Bandwidth = df_pm[df_pm["Lost_Bandwidth(Gbps)"] > 0].copy()
            
@@ -671,16 +659,15 @@ if not df_pm.empty:
             df_Lost_Bandwidth = df_Lost_Bandwidth.sort_values(by="Lost_Bandwidth(Gbps)", ascending=False)
 
 
-
-
 else:
     print(f"\nWARN: Couldn't find PM info in ibdiagnet2.db_csv.")
 
-# Step 5. Check link BER
+
+"""
+    # Step 6. Check link BER
+"""
 
 if not df_ibdgnt_net_ext.empty:
-
-    # 5.1 extract remote end info
 
     df_ibdgnt_net_ext = pd.merge(
         left=df_ibdgnt_net_ext,
@@ -700,21 +687,19 @@ if not df_ibdgnt_net_ext.empty:
             inplace=True,
         )
 
-        # 5.2 filter out links with effective BER > 1e-13
+        # 6.1 filter out links with effective BER > 1e-13
 
         df_eff_ber = df_ibdgnt_net_ext[df_ibdgnt_net_ext["EffectiveBER"] != ""].copy()
         df_eff_ber["EffectiveBER"] = df_eff_ber["EffectiveBER"].astype(float)
 
-
         df_eff_ber = df_eff_ber[df_eff_ber["EffectiveBER"] > 1e-13]
-
 
         df_eff_ber = df_eff_ber[
             ["SrcDevice", "SrcPort", "SrcGUID", "EffectiveBER", "DstDevice","DstPort", "DstGUID"]
         ]
         df_eff_ber = df_eff_ber.sort_values(by="EffectiveBER", ascending=False)
 
-        # 5.3 filter out links with Symbol BER > 1e-13
+        # 6.2 filter out links with Symbol BER > 1e-13
 
         df_symbol_ber = df_ibdgnt_net_ext[
             (df_ibdgnt_net_ext["SymbolBER"] != "") & (df_ibdgnt_net_ext["SymbolBER"] != "N/A")
@@ -728,7 +713,7 @@ if not df_ibdgnt_net_ext.empty:
         ]
         df_symbol_ber = df_symbol_ber.sort_values(by="SymbolBER", ascending=False)
 
-        # 5.4 Raw BER
+        # 6.3 Raw BER
 
         df_Raw_ber = df_ibdgnt_net_ext[df_ibdgnt_net_ext["RawBER"] != ""].copy()    
         df_Raw_ber["RawBER"] = df_Raw_ber["RawBER"].astype(float)
@@ -739,8 +724,6 @@ if not df_ibdgnt_net_ext.empty:
             ["SrcDevice", "SrcPort", "SrcGUID",  "RawBER", "DstDevice", "DstPort", "DstGUID"]
         ]
         df_Raw_ber = df_Raw_ber.sort_values(by="RawBER", ascending=False)
-       # print(df_Raw_ber["RawBER"])
-
 
 
     else : 
@@ -754,7 +737,7 @@ if not df_ibdgnt_net_ext.empty:
             inplace=True,
         )
 
-        # 5.2 filter out links with effective BER > 1e-13
+        # 6.1 filter out links with effective BER > 1e-13
 
         df_eff_ber = df_ibdgnt_net_ext[df_ibdgnt_net_ext["EffectiveBER"] != ""].copy()
         df_eff_ber["EffectiveBER"] = df_eff_ber["EffectiveBER"].astype(float)
@@ -766,7 +749,7 @@ if not df_ibdgnt_net_ext.empty:
         ]
         df_eff_ber = df_eff_ber.sort_values(by="EffectiveBER", ascending=False)
 
-        # 5.3 filter out links with Symbol BER > 1e-13
+        # 6.2 filter out links with Symbol BER > 1e-13
 
         df_symbol_ber = df_ibdgnt_net_ext[
             (df_ibdgnt_net_ext["SymbolErr"] != "") & (df_ibdgnt_net_ext["SymbolErr"] != "N/A")
@@ -780,7 +763,7 @@ if not df_ibdgnt_net_ext.empty:
         ]
         df_symbol_ber = df_symbol_ber.sort_values(by="SymbolErr", ascending=False)
 
-        # 5.4 Raw BER
+        # 6.3 Raw BER
 
         df_Raw_ber = df_ibdgnt_net_ext[df_ibdgnt_net_ext["RawBER"] != ""].copy()
 
@@ -797,7 +780,10 @@ if not df_ibdgnt_net_ext.empty:
 else:
     print(f"\nWARN: Couldn't find BER info in ibdiagnet2.net_dump_ext.")
 
-# Step 6. Print results
+
+"""
+    # Step 7. Print results
+"""
 
 if args.top_n == 10:
     print(
@@ -820,8 +806,6 @@ if not df_pm.empty:
     else:
         print(
             f"\n\nLinkDowned Counters: 0 on all links.",
-            #f"\n##################################################",
-            #f"\nINFO: LinkDowned counters are 0 on all links.",
         )
 
 
@@ -834,8 +818,6 @@ if not df_pm.empty:
     else:
         print(
             f"\n\nXmitDidscard Counters: 0 on all links",
-          #  f"\n##################################################",
-          #  f"\nINFO: XmitDidscard counters are 0 on all links.",
         )
 
  
@@ -850,8 +832,6 @@ if not df_pm.empty:
         else:
             print(
                 f"\n\nPort FEC Uncorrectable Counters: 0 on all links.",
-               # f"\n##################################################",
-               # f"\nINFO: FEC Uncorrectable counters are 0 on all links.",
             )
 
     if not df_buf_overrun.empty:
@@ -863,8 +843,6 @@ if not df_pm.empty:
     else:
         print(
             f"\n\nBuffer overrun Counters: 0 on all links "
-           # f"\n##################################################",
-           # f"\nINFO: ExcessiveBufferOverrunErrors counters are 0 on all links.",
         )
 
 
@@ -877,15 +855,12 @@ if not df_pm.empty:
     else:
         print(
             f"\n\nMax Retransmission_rate Counters: 0 on all links "
-           # f"\n##################################################",
-           # f"\nINFO: ExcessiveBufferOverrunErrors counters are 0 on all links.",
         )
 
 if not df_ibdgnt_net_ext.empty:
 
     if not df_Raw_ber.empty:
 
-     #   print(df_Raw_ber["RawBER"])
         if "RawBER" in df_Raw_ber:
             print(
                 f"\n\nRaw BER Counters > 1e-5 ",
@@ -894,7 +869,6 @@ if not df_ibdgnt_net_ext.empty:
             )
 
     else : 
-
         print(
             f"\n\nRaw Err counters below threshold ",
             )       
@@ -906,7 +880,6 @@ if not df_ibdgnt_net_ext.empty:
             f"\n{df_eff_ber.head(args.top_n).to_string(index=False)}",
         )
     else:
-
         print(
             f"\n\nEffective BER Counters below threshold",
         )
@@ -921,7 +894,6 @@ if not df_ibdgnt_net_ext.empty:
             )
 
         else : 
-
             print(
                 f"\n\nSymbol Err counters > 0 ",
                 f"\n##################################################",
@@ -929,11 +901,8 @@ if not df_ibdgnt_net_ext.empty:
             )       
 
     else:
-
         print(
             f"\n\nSymbol BER Counters below threshold ",
-          #  f"\n##################################################",
-          #  f"\nINFO: Symbol BER Counters <= 1e-13.",
         )
 
 
@@ -946,8 +915,6 @@ if not df_ibdgnt_net_ext.empty:
     else:
         print(
             f"\n\nCongestion Indexes : < 10 on all links:",
-         #   f"\n##################################################",
-         #   f"\nINFO: Congestion Indexes < 10 on all links.",
         )
 
     if "--pm_pause_time" in running_command_only :
@@ -1013,7 +980,9 @@ if not df_ibdgnt_net_ext.empty:
                     f"\n\n (Tier2 & Tier3) Tx BandWidth 0 on all links :",
                     )
     
-# Step 7. Save all outputs to excel file
+"""
+    # Step 8. Save all outputs to excel file
+"""
 
 if args.output_file:
 
@@ -1022,11 +991,11 @@ if args.output_file:
         f"\n##################################################",
     )
 
-    # 7.1 Create a Pandas Excel writer
+    # 8.1 Create a Pandas Excel writer
 
     writer = pd.ExcelWriter(args.output_file, engine="openpyxl")
 
-    # 7.2 Write each DataFrame to a specific sheet
+    # 8.2 Write each DataFrame to a specific sheet
 
     if not df_pm.empty:
         if not df_lnk_dn.empty:
@@ -1078,7 +1047,7 @@ if args.output_file:
                     
 
 
-    # 7.3 Close the Pandas Excel writer
+    # 8.3 Close the Pandas Excel writer
 
     writer.save()
     print(f"Data is written successfully to Excel File: {args.output_file}")
