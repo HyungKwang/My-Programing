@@ -59,8 +59,9 @@ parser.add_argument(
 usage = parser.format_usage()
 command1 = "\n\nExamples (How to run) > : \n\n  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2\n"
 command2 = "  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2 -a\n"
-command3 = "  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2 -a -o  C:\Python39\study\save_backdata.xlsx\n"
-parser.usage = usage.rstrip() + command1 + command2 + command3
+command3 = "  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2 -a -n 20\n"
+command4 = "  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx\n"
+parser.usage = usage.rstrip() + command1 + command2 + command3 + command4
 args = parser.parse_args()
 
 
@@ -709,7 +710,7 @@ if not df_ibdgnt_net_ext.empty:
 
 
         df_eff_ber = df_eff_ber[
-            ["SrcDevice", "SrcPort", "SrcGUID", "EffectiveBER", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID", "EffectiveBER", "DstDevice","DstPort", "DstGUID"]
         ]
         df_eff_ber = df_eff_ber.sort_values(by="EffectiveBER", ascending=False)
 
@@ -723,7 +724,7 @@ if not df_ibdgnt_net_ext.empty:
         df_symbol_ber = df_symbol_ber[df_symbol_ber["SymbolBER"] > 1e-13]
 
         df_symbol_ber = df_symbol_ber[
-            ["SrcDevice", "SrcPort", "SrcGUID",  "SymbolBER", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID",  "SymbolBER", "DstDevice", "DstPort", "DstGUID"]
         ]
         df_symbol_ber = df_symbol_ber.sort_values(by="SymbolBER", ascending=False)
 
@@ -735,7 +736,7 @@ if not df_ibdgnt_net_ext.empty:
         df_Raw_ber = df_Raw_ber[df_Raw_ber["RawBER"] > 1e-5]
 
         df_Raw_ber = df_Raw_ber[
-            ["SrcDevice", "SrcPort", "SrcGUID",  "RawBER", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID",  "RawBER", "DstDevice", "DstPort", "DstGUID"]
         ]
         df_Raw_ber = df_Raw_ber.sort_values(by="RawBER", ascending=False)
        # print(df_Raw_ber["RawBER"])
@@ -761,7 +762,7 @@ if not df_ibdgnt_net_ext.empty:
         df_eff_ber = df_eff_ber[df_eff_ber["EffectiveBER"] > 1e-13]
 
         df_eff_ber = df_eff_ber[
-            ["SrcDevice", "SrcPort", "SrcGUID", "EffectiveBER", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID", "EffectiveBER", "DstDevice", "DstPort", "DstGUID"]
         ]
         df_eff_ber = df_eff_ber.sort_values(by="EffectiveBER", ascending=False)
 
@@ -775,7 +776,7 @@ if not df_ibdgnt_net_ext.empty:
         df_symbol_ber = df_symbol_ber[df_symbol_ber["SymbolErr"] > 0]
 
         df_symbol_ber = df_symbol_ber[
-            ["SrcDevice", "SrcPort", "SrcGUID",  "SymbolErr", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID",  "SymbolErr", "DstDevice", "DstPort", "DstGUID"]
         ]
         df_symbol_ber = df_symbol_ber.sort_values(by="SymbolErr", ascending=False)
 
@@ -788,7 +789,7 @@ if not df_ibdgnt_net_ext.empty:
         df_Raw_ber = df_Raw_ber[df_Raw_ber["RawBER"] > 2e-5]
 
         df_Raw_ber = df_Raw_ber[
-            ["SrcDevice", "SrcPort", "SrcGUID",  "RawBER", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID",  "RawBER", "DstDevice", "DstPort", "DstGUID"]
         ]
         df_Raw_ber = df_Raw_ber.sort_values(by="RawBER", ascending=False)
 
