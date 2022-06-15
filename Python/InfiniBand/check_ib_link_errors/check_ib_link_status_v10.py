@@ -1,5 +1,5 @@
 # =============================================================================
-# File name: check_ib_link_status_v5.py
+# File name: check_ib_link_status_v10.py
 # Description: check common errors and congestion indexes on all IB links
 # Author: <.....> , HyungKwang Choi
 # Software: Python 3.8+, Pandas and OpenPyXL Libraries
