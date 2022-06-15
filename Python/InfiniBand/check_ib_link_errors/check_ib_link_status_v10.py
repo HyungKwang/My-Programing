@@ -663,7 +663,7 @@ if not df_pm.empty:
             df_Lost_Bandwidth["Current_BW_Gbps(TX/RX)"] =  df_Lost_Bandwidth["PortXmitDataExtended(Gbps)"]  +" / "+ df_Lost_Bandwidth["PortRcvDataExtended(Gbps)"]
             
             df_Lost_Bandwidth = df_Lost_Bandwidth[
-            ["SrcDevice", "SrcPort", "SrcGUID", "PortXmitWaitExt", "Lost_Bandwidth(Gbps)","Current_BW_Gbps(TX/RX)", "DstDevice", "DstGUID", "DstPort"]
+            ["SrcDevice", "SrcPort", "SrcGUID", "PortXmitWaitExt", "Lost_Bandwidth(Gbps)","Current_BW_Gbps(TX/RX)", "DstDevice", "DstPort", "DstGUID"]
        
             ]
                         
