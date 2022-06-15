@@ -938,7 +938,7 @@ if not df_ibdgnt_net_ext.empty:
 
     if not df_congestion_ext.empty:
         print(
-            f"\n\nCongestion Indexes > 10:",
+            f"\n\nCongestion Indexes > 10 (will be deprecated):",
             f"\n##################################################",
             f"\n{df_congestion_ext.head(args.top_n).to_string(index=False)}",
         )
