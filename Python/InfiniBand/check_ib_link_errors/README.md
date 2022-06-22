@@ -57,35 +57,35 @@
       
 
 ```
-$ python check_ib_link_errors_v5.py -h
+$python check_ib_link_status_v12.py -h
+usage: usage: check_ib_link_status_v12.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-n TOP_N] [-a] [-v]
 
-  usage: show_ib_inventory.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-f] [-s] [-v]
-  
-  optional arguments:
-   -h, --help show this help message and exit
-   -i IBDIAGNET_FOLDER, --ibdiagnet-folder IBDIAGNET_FOLDER
-  
-  read data from ibdiagnet2 output folder
-   -o OUTPUT_FILE, --output-file OUTPUT_FILE
-  
-  write IB SW and HCA inventory info to xlsx file
-   -f, --show-ib-hosts print detailed HCA inventory info
-   -s, --show-ib-switches
-  
-  print detailed IB switch inventory info
-   -v, --version print current script version
+Examples (How to run) > :
+
+  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2
+  #python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a
+  #python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a -n 20
+  #python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IBDIAGNET_FOLDER, --ibdiagnet-folder IBDIAGNET_FOLDER
+                        read data from ibdiagnet2 output folder
+  -o OUTPUT_FILE, --output-file OUTPUT_FILE
+                        write results to xlsx file
+  -n TOP_N, --top-n TOP_N
+                        print first N entries(by default, n = 10)
+  -a, --all             Display TX/RX Bandwiths in details
+  -v, --version         print current script version
+
 
 ```
 
 ```
-$ python check_ib_link_errors_v5.py -i /var/tmp/ibdiagnet2 -o Saving_data
+$ python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
 
    Running command: ibdiagnet --extended_speeds all --pm_per_lane --get_phy_info --get_cable_info --pc --reset_phy_info -o ./ibdiagnet_1st_reset_phy_info/
-   Start to parse ibdiagnet2.net_dump ...
-   Start to parse ibdiagnet2.db_csv ...
-   Start to parse ibdiagnet2.net_dump_ext ...
-   INFO: The --top-n option is not set, only the first 10 records will be listed here.
-   
+
    LinkDowned Counters:
    ##################################################
     SrcDevice            SrcPort            SrcGUID LinkDownedCounter DstDevice                     DstGUID   DstPort
@@ -104,4 +104,4 @@ $ python check_ib_link_errors_v5.py -i /var/tmp/ibdiagnet2 -o Saving_data
 ```
 
 
-## For further details, please refer to the manaul "IB Fabric Congestion Analysis v5.0.pdf"
+## For further details, please refer to the manaul.
