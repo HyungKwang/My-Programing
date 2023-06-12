@@ -57,15 +57,17 @@
       
 
 ```
-$python check_ib_link_status_v12.py -h
-usage: usage: check_ib_link_status_v12.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-n TOP_N] [-a] [-v]
+$python check_ib_link_status_v17.py -h
+
+usage: usage: check_ib_link_status_v17.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-n TOP_N] [-s LID_CHECKING] [-a] [-v]
 
 Examples (How to run) > :
 
-  #python check_ib_link_status_v10.py -i ./tem/ibdiagnet2
-  #python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a
-  #python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a -n 20
-  #python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
+  #python check_ib_link_status_v15.py -i ./tem/ibdiagnet2
+  #python check_ib_link_status_v15.py -i ./tem/ibdiagnet2 -a
+  #python check_ib_link_status_v15.py -i ./tem/ibdiagnet2 -a -n 20
+  #python check_ib_link_status_v15.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
+  #python check_ib_link_status_v15.py -i ./tem/ibdiagnet2 -a -n 20 -s lid_checking -o C:\Python39\study\save_backdata.xlsx
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -75,10 +77,10 @@ optional arguments:
                         write results to xlsx file
   -n TOP_N, --top-n TOP_N
                         print first N entries(by default, n = 10)
-  -a, --all             Display TX/RX Bandwiths in details
+  -s LID_CHECKING, --lid_checking LID_CHECKING
+                        lid_checking : Skip Invalid LID & Mcast LID checking
+  -a, --all             Display all TX/RX Bandwidth & Lost Bandwidth in details
   -v, --version         print current script version
-
-
 ```
 
 ![Untitled](https://github.com/HyungKwang/My-Programing/assets/91254602/676325c9-ac19-4a87-a6c6-92b05f78cf45)
