@@ -81,27 +81,7 @@ optional arguments:
 
 ```
 
-```
-$ python check_ib_link_status_v12.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
-
-   Running command: ibdiagnet --extended_speeds all --pm_per_lane --get_phy_info --get_cable_info --pc --reset_phy_info -o ./ibdiagnet_1st_reset_phy_info/
-
-   LinkDowned Counters:
-   ##################################################
-    SrcDevice            SrcPort            SrcGUID LinkDownedCounter DstDevice                     DstGUID   DstPort
-    SIB30183                  74 0x0c42a10300bbbbbb                4   MT4123 ConnectX6   0x0c42a1030aaaaaaa         1
-    SIB30237                  37 0x0c42a10300aaaaaa                1   n08509 HCA-1       0x0c42a10300407088         1
-    CORE-SW05A:MCS8500/S02/U1 15 0xb8599f0300dddddd                1   CORE-SW05A:/L15/U1 0x0c42a10300ssssss        22
-   
-   XmitDidscard Counters:
-  ##################################################
-    SrcDevice    SrcPort            SrcGUID PortXmitDiscards DstDevice DstGUID           DstPort
-    n08509 HCA-1       1 0x0c42a10301111111              290  SIB30237 0x0c42a10322222222     37
-   ~
-   ~
-
-
-```
+![Untitled](https://github.com/HyungKwang/My-Programing/assets/91254602/676325c9-ac19-4a87-a6c6-92b05f78cf45)
 
 
 ## For further details, please refer to the manaul.
