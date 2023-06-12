@@ -15,7 +15,6 @@ Python 3.9.6
 
 [root@My_test_lab ~]# pip install pyqt5
 
-
 ```
 
  ### Runing
