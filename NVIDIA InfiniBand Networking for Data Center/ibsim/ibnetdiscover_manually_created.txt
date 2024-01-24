@@ -10,7 +10,7 @@ switchguid=0x4444444444444444(4444444444444444)
 Switch  37 "S-4444444444444444"         # "MF0;IB_switch_4:MSB7800/U1" enhanced port 0 lid 2 lmc 0
 [1]     "S-3333333333333333"[2]         # "MF0;IB_switch_3:MSB7800/U1" lid 10 4xEDR
 [2]     "S-1111111111111111"[2]         # "MF0;IB_switch_1:MSB7800/U1" lid 4 4xEDR
-[35]    "H-0444444444host_4"[1](444444444host_4)                # "host_4 HCA-1" lid 1 4xEDR
+[37]    "H-7cfe900300ac2d58"[1](7cfe900300ac2d58)               # "Mellanox Technologies Aggregation Node" lid 7 4xEDR
 
 
 vendid=0x2c9
@@ -21,7 +21,7 @@ Switch  37 "S-2222222222222222"         # "MF0;IB_switch_2:MSB7800/U1" enhanced 
 [1]     "S-1111111111111111"[1]         # "MF0;IB_switch_1:MSB7800/U1" lid 4 4xEDR
 [2]     "S-3333333333333333"[1]         # "MF0;IB_switch_3:MSB7800/U1" lid 10 4xEDR
 [35]    "H-22222222222host2"[1](22222222222host2)               # "host_2 mlx5_0" lid 6 4xEDR
-
+[37]    "H-7cfe900300b1dff8"[1](7cfe900300b1dff8)               # "Mellanox Technologies Aggregation Node" lid 9 4xEDR
 
 vendid=0x2c9
 devid=0xcf08
@@ -31,7 +31,7 @@ Switch  37 "S-1111111111111111"         # "MF0;IB_switch_1:MSB7800/U1" enhanced 
 [1]     "S-2222222222222222"[1]         # "MF0;IB_switch_2:MSB7800/U1" lid 5 4xEDR
 [2]     "S-4444444444444444"[2]         # "MF0;IB_switch_4:MSB7800/U1" lid 2 4xEDR
 [35]    "H-11111111111host1"[1](11111111111host1)               # "host_1 mlx5_0" lid 3 4xEDR
-
+[37]    "H-248a0703005bc7c8"[1](248a0703005bc7c8)               # "Mellanox Technologies Aggregation Node" lid 8 4xEDR
 
 vendid=0x2c9
 devid=0xcf08
@@ -41,7 +41,7 @@ Switch  37 "S-3333333333333333"         # "MF0;IB_switch_3:MSB7800/U1" enhanced 
 [1]     "S-2222222222222222"[2]         # "MF0;IB_switch_2:MSB7800/U1" lid 5 4xEDR
 [2]     "S-4444444444444444"[1]         # "MF0;IB_switch_4:MSB7800/U1" lid 2 4xEDR
 [35]    "H-03333333333host3"[1](3333333333host3)                # "host_3 HCA-1" lid 11 4xEDR
-
+[37]    "H-bbbbbbbbbbbbbbbb"[1](bbbbbbbbbbbbbbbb)               # "Mellanox Technologies Aggregation Node" lid 12 4xEDR
 
 
 vendid=0x2c9
@@ -51,13 +51,21 @@ caguid=0x3333333333host3
 Ca      1 "H-03333333333host3"          # "host_3 HCA-1"
 [1](3333333333host3)    "S-3333333333333333"[35]                # lid 11 lmc 0 "MF0;IB_switch_3:MSB7800/U1" lid 10 4xEDR
 
+vendid=0x2c9
+devid=0xcf09
+sysimgguid=0x3333333333333333
+caguid=0xbbbbbbbbbbbbbbbb
+Ca      1 "H-bbbbbbbbbbbbbbbb"          # "Mellanox Technologies Aggregation Node"
+[1](bbbbbbbbbbbbbbbb)   "S-3333333333333333"[37]                # lid 12 lmc 0 "MF0;IB_switch_3:MSB7800/U1" lid 10 4xEDR
+
 
 vendid=0x2c9
-devid=0x1017
-sysimgguid=0x444444444host_4
-caguid=0x444444444host_4
-Ca      1 "H-0444444444host_4"          # "host_4 HCA-1"
-[1](444444444host_4)    "S-4444444444444444"[35]                # lid 1 lmc 0 "MF0;IB_switch_4:MSB7800/U1" lid 2 4xEDR
+devid=0xcf09
+sysimgguid=0x4444444444444444
+caguid=0x7cfe900300ac2d58
+Ca      1 "H-7cfe900300ac2d58"          # "Mellanox Technologies Aggregation Node"
+[1](7cfe900300ac2d58)   "S-4444444444444444"[37]                # lid 7 lmc 0 "MF0;IB_switch_4:MSB7800/U1" lid 2 4xEDR
+
 
 vendid=0x2c9
 devid=0x1019
@@ -65,6 +73,20 @@ sysimgguid=0x22222222222host2
 caguid=0x22222222222host2
 Ca      1 "H-22222222222host2"          # "host_2 mlx5_0"
 [1](22222222222host2)   "S-2222222222222222"[35]                # lid 6 lmc 0 "MF0;IB_switch_2:MSB7800/U1" lid 5 4xEDR
+
+vendid=0x2c9
+devid=0xcf09
+sysimgguid=0x2222222222222222
+caguid=0x7cfe900300b1dff8
+Ca      1 "H-7cfe900300b1dff8"          # "Mellanox Technologies Aggregation Node"
+[1](7cfe900300b1dff8)   "S-2222222222222222"[37]                # lid 9 lmc 0 "MF0;IB_switch_2:MSB7800/U1" lid 5 4xEDR
+
+vendid=0x2c9
+devid=0xcf09
+sysimgguid=0x1111111111111111
+caguid=0x248a0703005bc7c8
+Ca      1 "H-248a0703005bc7c8"          # "Mellanox Technologies Aggregation Node"
+[1](248a0703005bc7c8)   "S-1111111111111111"[37]                # lid 8 lmc 0 "MF0;IB_switch_1:MSB7800/U1" lid 4 4xEDR
 
 
 vendid=0x2c9
