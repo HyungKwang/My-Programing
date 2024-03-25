@@ -7,6 +7,19 @@
 
 ## How to run
 
+ ### My script coded/developed/runs on Window.  
+
+  If you want to run in Apple MAC, it does not work
+> To run it in WSL
+
+     
+```
+jun@HYUNGKWANGC-LT:/mnt/c/TEST$$ sudo apt install python3-pip
+jun@HYUNGKWANGC-LT:/mnt/c/TEST$$ pip3 install pandas
+
+jun@HYUNGKWANGC-LT:/mnt/c/TEST$ python3 check_ib_link_status_v20.py  -h
+```
+
  ### You must install python related libarary. 
 
 > From my system
