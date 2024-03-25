@@ -7,10 +7,9 @@
 
 ## How to run
 
- ### My script coded/developed/runs on Window.  
+ ### My script coded/developed/runs on Window. In Apple MAC, it does not work
 
-  If you want to run in Apple MAC, it does not work
-> To run it in WSL
+> If you want to run it in WSL
 
      
 ```
