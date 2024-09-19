@@ -63,8 +63,6 @@ optional arguments:
                         reading ibdiagnet2.cables (if file size big), it takes much time. So, To skip cables/optic chcecking
   -a, --all             Display all TX/RX Bandwidth & Lost Bandwidth in details
   -v, --version         print current script version
-
-
 ```
 
 ![Untitled](https://github.com/HyungKwang/My-Programing/assets/91254602/676325c9-ac19-4a87-a6c6-92b05f78cf45)
