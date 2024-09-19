@@ -1308,7 +1308,7 @@ if not df_pm.empty:
         )
     else:
         print(
-            f"\n\Max Retransmission_rate : > 500 (Qt : 0):",
+            f"\nMax Retransmission_rate : > 500 (Qt : 0):",
             f"\n##################################################",
         )
 
