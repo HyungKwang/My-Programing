@@ -1308,9 +1308,8 @@ if not df_pm.empty:
         )
     else:
         print(
-            f"\n\Max Retransmission_rate : > 500:",
+            f"\n\Max Retransmission_rate : > 500 (Qt : 0):",
             f"\n##################################################",
-            f"\n\nMax Retransmission_rate Counters: 0 on all links "
         )
 
 if not df_ibdgnt_net_ext.empty:
@@ -1362,7 +1361,6 @@ if not df_ibdgnt_net_ext.empty:
         print(
             f"\n\nSymbol BER Counters > 1e-13, or Err > 0 (Qt : 0):",
             f"\n##################################################",
-            f"\n\nSymbol BER Counters below threshold ",
         )
 
     if not df_pm.empty:
