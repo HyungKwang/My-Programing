@@ -35,7 +35,7 @@ XlsxWriter        3.2.0   <=======
 
  ### Runing 
 
-```
+```python
 $python check_ib_link_status_v29.py -h
 
 usage: usage: check_ib_link_status_v29.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-n TOP_N] [-s] [-c] [-a] [-v]
