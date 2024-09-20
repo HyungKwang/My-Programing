@@ -100,12 +100,12 @@ parser.add_argument(
     help="print current script version",
 )
 usage = parser.format_usage()
-command1 = "\n\nExamples (How to run) > : \n\n  #python check_ib_link_status_v15.py -i ./tem/ibdiagnet2\n"
-command2 = "  #python check_ib_link_status_v29.py -i ./tem/ibdiagnet2 -a\n"
-command3 = "  #python check_ib_link_status_v29.py -i ./tem/ibdiagnet2 -a -n 20\n"
-command4 = "  #python check_ib_link_status_v29.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx\n"
-command5 = "  #python check_ib_link_status_v29.py -i ./tem/ibdiagnet2 -a -n 20 -s -o C:\Python39\study\save_backdata.xlsx\n"
-command6 = "  #python check_ib_link_status_v29.py -i ./tem/ibdiagnet2 -a -n 20 -c -s -o C:\Python39\study\save_backdata.xlsx\n"
+command1 = "\n\nExamples (How to run) > : \n\n  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2\n"
+command2 = "  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2 -a\n"
+command3 = "  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2 -a -n 20\n"
+command4 = "  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx\n"
+command5 = "  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2 -a -n 20 -s -o C:\Python39\study\save_backdata.xlsx\n"
+command6 = "  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2 -a -n 20 -c -s -o C:\Python39\study\save_backdata.xlsx\n"
 parser.usage = usage.rstrip() + command1 + command2 + command3 + command4 + command5 + command6
 args = parser.parse_args()
 
