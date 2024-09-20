@@ -1327,13 +1327,13 @@ if not df_pm.empty:
 
     if not df_xmit_drp.empty:
         print(
-            f"\n\nXmitDidscard Counters > 0 (Qt :{len(df_xmit_drp.index)})",
+            f"\n\nXmitDiscard Counters > 0 (Qt :{len(df_xmit_drp.index)})",
             f"\n##################################################",
             f"\n{df_xmit_drp.head(args.top_n).to_string(index=False)}",
         )
     else:
         print(
-            f"\n\nXmitDidscard Counters > 0 (Qt : 0):",
+            f"\n\nXmitDiscard Counters > 0 (Qt : 0):",
             f"\n##################################################",
         )
 
