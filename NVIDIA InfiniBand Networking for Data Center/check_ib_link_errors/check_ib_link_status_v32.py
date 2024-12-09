@@ -38,7 +38,7 @@
 # v29 : 9/10/2024  modified by HyungKwang  added new parameter to avoid checking 3rd party cables. Because if IB network is scale, it takes much time to retrive cables info. 
 # v30 : 9/21/2024  modified by HyungKwang  added new check items for IB devices & IB switch Asic temperature. 
 # v31 : 9/25/2024  modified by HyungKwang  Removed HCA_inventory_Details, IB_Switch_Details excel sheet being saved.
-# v32 : 9/25/2024  modified by HyungKwang  changed some syntax because if you run lastest Pandas (ex 2.2.3), it will dispaly 'future warnning' due some syntax will not support in latest Pandas. So updated.
+# v32 : 12/09/2024  modified by HyungKwang  changed some syntax because if you run lastest Pandas (ex 2.2.3), it will dispaly 'future warnning' due some syntax will not support in latest Pandas. So updated.
 #                                          Update lost bandwidth formula 10^9 => 1000000000...Please refer to how to calculate Lost Bandwidth
 #                                           df_pm["Lost_Bandwidth(Gbps)"] = ( 
 #                                                  df_pm["PortXmitWaitExt"] * 64 / (pm_pause_time_value * 1000000000)
