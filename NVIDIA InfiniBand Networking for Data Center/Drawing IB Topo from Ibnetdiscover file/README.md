@@ -30,9 +30,9 @@ Python 3.9.6
 
  ### InfiniBand Network Topologies drawn
 
-![main](https://github.com/HyungKwang/My-Programing/assets/91254602/fbf670fd-9a11-46a7-8fd0-415cbd412eaf)
+![Image](https://github.com/user-attachments/assets/263ca6ff-1c1c-485b-80be-7a691593b57a)
 
-![pop](https://github.com/HyungKwang/My-Programing/assets/91254602/1327ad37-f221-4a72-b489-d1f8875d13d7)
+![Image](https://github.com/user-attachments/assets/0ed821ea-2309-40de-aae7-ed3dd358a2a9)
 
 ![visio](https://github.com/HyungKwang/My-Programing/assets/91254602/8addb4bd-6225-433c-b21d-f7daa4b04ffd)
 
