@@ -34,6 +34,10 @@ Python 3.9.6
 
 ![Topo](https://github.com/HyungKwang/My-Programing/assets/91254602/6175cb2c-59d8-4fea-a275-87070aefacd1)
 
+![Image](https://github.com/user-attachments/assets/0db3117d-eb1e-42ab-978f-60eb8d953a3e)
 
+![Image](https://github.com/user-attachments/assets/bab8c79c-ae16-4c7b-9f19-cad311e2efa5)
+
+![Image](https://github.com/user-attachments/assets/38ee8f63-d7a5-4ae7-9bd5-4a940863b8cc)
 
 ## For further details, please refer to the manaul.
