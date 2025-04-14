@@ -2,7 +2,8 @@
 
  This script helps to draw InfiniBand Network Topology from ibnetdiscover file.
  
- > From my system
+## What this tool supports, "Topology types & Tested"
+ ### Please refer to the ibnetdiscoer zip file attached for your reference
 
 ![Image](https://github.com/user-attachments/assets/7e9b8b90-a8d5-483e-98fe-b1061e6c9346)
 
