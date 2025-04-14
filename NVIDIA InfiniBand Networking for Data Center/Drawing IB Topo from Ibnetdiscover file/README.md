@@ -24,7 +24,7 @@ Python 3.9.6
 [root@My_test_lab ~]# Drawing IB Topo from ibnetdiscover.py
 
 ```
-
+![Image](https://github.com/user-attachments/assets/7e9b8b90-a8d5-483e-98fe-b1061e6c9346)
 
 ![main](https://github.com/HyungKwang/My-Programing/assets/91254602/fbf670fd-9a11-46a7-8fd0-415cbd412eaf)
 
