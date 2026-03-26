@@ -30,7 +30,7 @@ The script was implemented using Cursor. If you understand the underlying princi
 > mapping.csv
 
 ```
-gpu 		base_guid			alid		alid_hex		plane_idx		plid_hex		plid_dec		switch_guid			switch_lid_dec	switch_lid_hex
+gpu 		base_guid		alid		alid_hex		plane_idx		plid_hex		plid_dec		switch_guid			switch_lid_dec	switch_lid_hex
 1		1111111111111111	1025		0x0401			1			0x0c12		3090		xxxxxxxxxxxxxxxx				2		0x0002
 1		1111111111111111	1025		0x0401	 		2			0x1402		5122		xxxxxxxxxxxxxxxx				3		0x0003
 1		1111111111111111	1025		0x0401   		3			0x1c02		7170		xxxxxxxxxxxxxxxx				4		0x0004
