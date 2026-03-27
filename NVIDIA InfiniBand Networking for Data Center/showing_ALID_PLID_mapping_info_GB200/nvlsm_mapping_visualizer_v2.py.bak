@@ -431,7 +431,7 @@ def draw_topology_diagram(
                     zorder=2,
                 )
 
-    ax.set_title("NVLSM: GPU ALID / PLID ↔ NVSwitch LID (planes)", fontsize=22)
+    ax.set_title("NVLSM: GPU ALID / PLID ↔ NVSwitch LID (planes)", fontsize=16)
     fig.tight_layout()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(out_path, bbox_inches="tight")

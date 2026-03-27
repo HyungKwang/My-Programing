@@ -25,7 +25,7 @@ The script was implemented using Cursor. If you understand the underlying princi
 ```
  ### Running Output 
  
-![Image](https://github.com/user-attachments/assets/9fa51bfe-7048-4fd3-9b2f-2dcfca6b8ed2)
+![Image](https://github.com/user-attachments/assets/9f71d134-0902-42e2-9dc0-69bc8a6e589b)
 > mapping.csv
 
 ```
