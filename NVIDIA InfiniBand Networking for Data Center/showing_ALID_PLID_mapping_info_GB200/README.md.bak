@@ -30,7 +30,7 @@ The script was implemented using Cursor. If you understand the underlying princi
 > mapping.csv
 
 ```
-GPU#	GPU_guid			GPU_ALID	GPU_ALID_hex		GPU_Port_guid				GPU_PLID	GPU_PLID_hex	NVSwitch_ASIC#	NVSwitch_guid			NVSwitch_LID	NVSwitch_LID_hex
+GPU#	GPU_guid			GPU_ALID	GPU_ALID_hex		GPU_Port_guid			GPU_PLID	GPU_PLID_hex		NVSwitch_ASIC#	NVSwitch_guid			NVSwitch_LID	NVSwitch_LID_hex
 1		0xc9acaafcd4dcea00	1025		0x0401				0xc9acaafcd4dcea0c	3090			0x0c12					1						0x6433aa030026af00	2							0x0002
 1		0xc9acaafcd4dcea00	1025		0x0401				0xc9acaafcd4dcea0d	5122			0x1402					2						0x6433aa030026af20	3							0x0003
 1		0xc9acaafcd4dcea00	1025		0x0401				0xc9acaafcd4dcea06	7170			0x1c02					3						0x6433aa030026ae40	4							0x0004
