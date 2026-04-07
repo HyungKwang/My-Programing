@@ -1763,13 +1763,13 @@ if not df_power_supplies_tbl.empty:
                 
     else:
         print(
-            f"\n\nPSU problem regarding (IsPresent, IsFRU, DCState, AlertState )",
+            f"\n\nNo PSU problem regarding (IsPresent, IsFRU, DCState, AlertState )",
             f"\n##################################################",
             )
 
 else:
     print(
-        f"\n\nPSU problem regarding (IsPresent, IsFRU, DCState, AlertState )",
+        f"\n\nNo PSU problem regarding (IsPresent, IsFRU, DCState, AlertState )",
         f"\n##################################################",
         )
 
