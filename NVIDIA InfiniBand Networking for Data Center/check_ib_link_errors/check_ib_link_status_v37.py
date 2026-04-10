@@ -159,7 +159,7 @@ parser.add_argument(
     help="print current script version",
 )
 usage = parser.format_usage()
-command1 = "\n\nExamples (How to run) > : \n\n  #python check_ib_link_status_v30.py -i ./tem/ibdiagnet2 \n"
+command1 = "\n\nExamples (How to run) > : \n\n  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 \n"
 command2 = "  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a \n"
 command3 = "  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 \n"
 command4 = "  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\\Python39\\study\\save_backdata.xlsx \n"
