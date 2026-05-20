@@ -10,14 +10,15 @@
 
 ## How to run
 
- ### step.1 : please run & collect ibdiagnet files. please refer to below 2 running command examples. 
-'''
+ ### step.1 :
+      please run & collect ibdiagnet files. (refer to below 2 running commands as an example)
+```
 #ibdiagnet -r -P all=1 --extended_speeds all --pm_per_lane --get_phy_info --get_cable_info 
 #tar cvf ibdiagnet_A.tar /var/tmp/ibdiagnet2/
 
 #ibdiagnet -r --pc --pm_pause_time 100 -P all=1 --extended_speeds all --pm_per_lane --reset_phy_info  --get_phy_info  --get_cable_info 
 #tar cvf ibdiagnet_B.tar /var/tmp/ibdiagnet2/
-'''
+```
 
  ### step.2 You must install python related libararies in your Window to run the script.
 
