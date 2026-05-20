@@ -79,6 +79,9 @@ options:
 ## Script running output
 
 ```console
+========================
+SYSTEM OUTPUT
+========================
 C:\Python_3.13.3\Study>python check_ib_link_status_v39.py -i ./del/ibdiagnet_A/var/tmp/ibdiagnet2 -o C:\Python_3.13.3\Study\del\A.xlsx -c
 
 INFO: The --top-n option is not set, only the first 10 records will be listed here.
