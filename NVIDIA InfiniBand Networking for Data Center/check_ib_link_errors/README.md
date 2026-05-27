@@ -1,7 +1,100 @@
 ## Intro
 
  This script gives a quick overview of Infiniband Fabric status based on ibdiagnet collection.
+ This MD created based on my script v.39
 
+ ### My script will defect and display defective items, which gives quick IB Fabric overview 
+
+```
+IB Switch Inventory Summary
+##################################################
+
+HCA Inventory Summary
+##################################################
+
+GPU Inventory Summary
+##################################################
+
+Invalid LID number or Mcast LID found 
+##################################################
+
+LinkDowned Counters > 0 
+##################################################
+
+XmitDidscard Counters > 0 
+##################################################
+
+Port FEC Uncorrectable Counters 
+##################################################
+
+Buffer overrun Counters > 0 
+##################################################
+
+Max Retransmission_rate : > 500 
+##################################################
+
+Raw BER Counters > 1e-5 (Qt :{len(df_Raw_ber.index)}) 
+##################################################
+
+Effective BER Counters > 1e-13 
+##################################################
+
+Symbol BER Counters > 1e-13, or Err > 0 
+##################################################
+
+Congestion Indexes > 10
+##################################################
+
+Lost Bandwidth Summary 
+##################################################
+
+Lost Bandwidth Summary 
+##################################################
+
+#######################################################################
+###########   Fabric link Rate in details + Lost Bandwidth   ##########
+####################################################################### 
+
+(Tier1 & Tier4) Switch -> Servers By RX Bandwidth 
+#######################################################################################
+
+ (Tier1 & Tier4) Servers -> Switch By TX Bandwidth   
+#######################################################################################
+
+ (Tier2 & Tier3) Switch <-> Switch By RX Bandwidth
+#######################################################################################
+
+ (Tier2 & Tier3) Switch <-> Switch By TX Bandwidth
+#######################################################################################
+
+ All_port_TX_RX_Bandwidth Bandwidth
+#######################################################################################
+
+IB Device temperature > 70c or IB Switch Asic temperature > 70c 
+##################################################
+
+3rd Party Cable used 
+##################################################
+
+Cable Temperature > 70c
+##################################################
+
+PSU problem regarding (IsPresent, IsFRU, DCState, AlertState )
+##################################################
+
+APort Symmetry Check finished with errors 
+##################################################
+
+ Links Speed Check finished with errors 
+##################################################
+
+Rail Optimized Topology Validation ended with
+##################################################
+
+Saving to Excel file:
+##################################################
+
+```
 
 ## Running environment
  I've coded it based on Window CMD. It works well in Window CMD
@@ -9,6 +102,7 @@
  If there is a request from MAC/Linux users, i can make it.
 
 ## How to run
+
 
  ### step.1 : please run & collect ibdiagnet files. (refer to below 2 running commands as an example)
 ```
