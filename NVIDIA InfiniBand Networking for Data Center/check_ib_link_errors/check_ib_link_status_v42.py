@@ -1623,7 +1623,7 @@ if temp_invalid_checking :
         if len(warn_return) >0  :
                 print(
                     f"\n\nInvalid LID number or Mcast LID found (to skip this, please re-run with -s )",
-                    f"\n##################################################
+                    f"\n##################################################",
                 )      
                 for i in warn_return :
                             print(i)
