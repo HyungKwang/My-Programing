@@ -119,7 +119,7 @@ options:
                         example: "Nov 02 18:57:30 ~ Jan 15 01:57:30"
 ```
 
-## Excel capture as a result
+## As a script running output, Excel file created. In Excel, there are 2 Chart Sheets.
 
 > Accumulated chart 
 <img width="1108" height="306" alt="Image" src="https://github.com/user-attachments/assets/8058c68d-745b-404c-95b0-e07c6324eec9" />
