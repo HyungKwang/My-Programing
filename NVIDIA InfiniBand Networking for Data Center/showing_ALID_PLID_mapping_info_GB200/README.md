@@ -16,16 +16,21 @@ The script was implemented using Cursor. If you understand the underlying princi
 #pip install -r "c:\E\nmx-c\requirements-nvlsm-viz.txt"
 ```
 
- ### Runing 
+ ### Running 
 
 ```
 #python "...\nmx-c\nvlsm_mapping_visualizer.py" --nvlsm-dir "...\nvlsm" --out "diagram.png" --mode topology --gpu-index 0
 
-#python "...\nvlsm_mapping_visualizer.py" --nvlsm-dir "...\nvlsm" --out "mapping.csv" --mode csv
 ```
- ### Running Output 
+ ## Diagram
 
 <img width="1478" height="741" alt="Image" src="https://github.com/user-attachments/assets/1a2f83cc-2f98-471a-8f58-91e322f9be46" />
-> mapping.csv
+
+ ### Running 
+
+```
+#python "...\nvlsm_mapping_visualizer.py" --nvlsm-dir "...\nvlsm" --out "mapping.csv" --mode csv
+```
+ ## mapping.csv
 
 <img width="784" height="259" alt="Image" src="https://github.com/user-attachments/assets/9ed19372-e533-4754-a4f3-83dd273f6305" />
