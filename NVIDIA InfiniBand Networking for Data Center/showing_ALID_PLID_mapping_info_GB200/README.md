@@ -20,7 +20,6 @@ The script was implemented using Cursor. If you understand the underlying princi
 
 ```
 #python "...\nmx-c\nvlsm_mapping_visualizer.py" --nvlsm-dir "...\nvlsm" --out "diagram.png" --mode topology --gpu-index 0
-
 ```
  ## Diagram
 
