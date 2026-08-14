@@ -8,9 +8,8 @@
 ## How to run & How to reproduce IB Credit Loop & How detect IB Credit Loop & How to fix IB Credit Loop
 
 ```
-I've written "NVIDIA InfiniBand Networking" which is the world 1st published InfinBand Networking book.
-To publish it, currently i am talking with NVIDIA Internal parties. 
+I've written "NVIDIA InfiniBand DataCenter Networking" which is the world 1st published InfiniBand Networking book.
 In my book, it has and described on " How to run & How to reproduce IB Credit Loop & How detect IB Credit Loop & How to fix IB Credit Loop"
-Let's see when it's being publised offically.
+Please refer to my book
  
 ```
