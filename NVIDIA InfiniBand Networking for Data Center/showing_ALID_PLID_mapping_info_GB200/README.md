@@ -19,7 +19,7 @@ The script was implemented using Cursor. If you understand the underlying princi
  ### Running 
 
 ```
-#python "...\nmx-c\nvlsm_mapping_visualizer.py" --nvlsm-dir "...\nvlsm" --out "diagram.png" --mode topology --gpu-index 0
+#python ./nvlsm_mapping_visualizer.py --nvlsm-dir ".\nvlsm" --out "diagram.png" --mode topology --gpu-index 0
 ```
  ## Diagram
 
@@ -28,7 +28,7 @@ The script was implemented using Cursor. If you understand the underlying princi
  ### Running 
 
 ```
-#python "...\nvlsm_mapping_visualizer.py" --nvlsm-dir "...\nvlsm" --out "mapping.csv" --mode csv
+#python ./nvlsm_mapping_visualizer.py --nvlsm-dir ".\nvlsm" --out "mapping.csv" --mode csv
 ```
  ## mapping.csv
 
