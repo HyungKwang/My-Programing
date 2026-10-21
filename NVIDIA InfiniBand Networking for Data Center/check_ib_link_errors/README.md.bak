@@ -91,7 +91,7 @@ python check_ib_link_status_v49.py -i IBDIAGNET_FOLDER [options]
 | `-a`, `--all` | Display detailed server/switch TX/RX bandwidth and lost-bandwidth tables. Requires `--pm_pause_time` in the original ibdiagnet command. |
 | `-v`, `--version` | Print the script version string and exit. |
 
-### Examples
+### Examples on How to running
 
 Analyze a collection and print the first 10 rows in each section:
 
@@ -117,14 +117,21 @@ Skip cable and LID checks:
 python check_ib_link_status_v49.py -i .\ibdiagnet2 -c -s
 ```
 
-Display detailed bandwidth tables and save results to Excel:
+Command lists:
 
 ```powershell
-python check_ib_link_status_v49.py `
-  -i .\ibdiagnet2 `
-  -a `
-  -n 20 `
-  -o C:\Reports\ib_fabric_status.xlsx
+C:\Python_3.13.3\Study>python check_ib_link_status_v39.py -h
+usage: usage: check_ib_link_status_v39.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-n TOP_N] [-s] [-c] [-d] [-a] [-v]
+
+Examples (How to run) > :
+
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -s -o C:\Python39\study\save_backdata.xlsx
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -c -s -o C:\Python39\study\save_backdata.xlsx
+  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -d
 ```
 
 If `ib_fabric_status.xlsx` already exists, the script uses `ib_fabric_status_1.xlsx`, then `_2`, and so on. Existing workbooks are not overwritten.
@@ -196,37 +203,6 @@ When the original collection command contains `--pm_pause_time`, the script calc
 - PCI degradation warnings
 - Ports that are UP while the remote peer is not responding
 
-## Console behavior
-
-Only non-empty findings are normally printed, limited by `--top-n`. The final section always reports completion status:
-
-```text
-Check completion summary:
-##################################################
-All applicable check items were available; no checks were skipped.
-```
-
-If data is missing or partially invalid, the script continues with other available checks and reports what was skipped or adjusted:
-
-```text
-Check completion summary:
-##################################################
-The script continued with all available checks.
-The following unavailable or partial checks were skipped/adjusted:
-1. Check: Congestion index check
-   Missing/problem item(s): PortXmitWaitExt
-   Result: Required extended PM counter(s) were not found; this check was skipped.
-```
-
-Fatal errors include the processing stage and reason:
-
-```text
-ERROR: Script execution stopped.
-Stage: loading and parsing ibdiagnet2.db_csv tables
-Item: ibdiagnet2.db_csv
-Reason: Required file not found: ...
-```
-
 ## Excel output
 
 Use `-o` to create an Excel workbook. Sheets are created only when the corresponding result contains data.
@@ -267,9 +243,7 @@ Possible sheets include:
 
 - Use `-c` if `ibdiagnet2.cables` is very large and cable analysis is not required. In v49 the file is completely bypassed.
 - Use `-s` if LID validation is not needed.
-- Keep the default `-n 10` for concise console output; increasing `-n` affects display volume, not the number of rows written to Excel.
-- Large `ibdiagnet2.db_csv`, `net_dump`, cable, and routing files can require substantial memory and several minutes of processing.
-- Use `-d` only for troubleshooting because the debug PM export may be large.
+
 
 ## Screenshot
 

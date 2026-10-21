@@ -91,7 +91,7 @@ python check_ib_link_status_v49.py -i IBDIAGNET_FOLDER [options]
 | `-a`, `--all` | Display detailed server/switch TX/RX bandwidth and lost-bandwidth tables. Requires `--pm_pause_time` in the original ibdiagnet command. |
 | `-v`, `--version` | Print the script version string and exit. |
 
-### Examples
+### Examples 'How to running'
 
 Analyze a collection and print the first 10 rows in each section:
 
