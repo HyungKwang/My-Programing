@@ -1,176 +1,284 @@
-## Intro
+# InfiniBand Fabric Status Checker
 
- This script gives a quick overview of Infiniband Fabric status based on ibdiagnet collection.
- This MD created based on my script v.39
+`check_ib_link_status_v49.py` provides a quick health overview of an NVIDIA InfiniBand fabric by analyzing an existing `ibdiagnet2` output directory. It reports inventory, link errors, congestion, BER, bandwidth loss, temperature, cable, PSU, topology, and other fabric warnings to the console and can optionally save findings to an Excel workbook.
 
- ### My script will defect and display defective items, which gives quick IB Fabric overview 
+The script does not run `ibdiagnet` itself. Collect the diagnostic files on the fabric management host first, copy or extract the resulting directory to the analysis system, and then pass that directory with `-i`.
 
-```
-IB Switch Inventory Summary
-##################################################
+## Highlights in v49
 
-HCA Inventory Summary
-##################################################
+- Supports NVIDIA XDR multi-plane link mapping, where one logical link may contain four planes.
+- Checks `VL15DroppedExt` first and falls back to `VL15Dropped` when the extended counter is unavailable.
+- Treats PM checks independently. A missing optional counter skips only the affected check instead of stopping all analysis.
+- Prints a final completion summary listing checks that were skipped, adjusted, or partially processed.
+- Adds stage-aware fatal error reporting with the problem item, processing stage, reason, and traceback for unexpected errors.
+- Avoids pandas DataFrame fragmentation warnings during lost-bandwidth and TX/RX calculations.
+- Makes `-c` a true cable bypass: `ibdiagnet2.cables` is not opened or parsed.
+- Handles cable values containing additional colons, such as `SN: MT24:4NT05981`.
+- Skips only an invalid cable block and reports it at completion instead of terminating the script.
+- Prevents accidental Excel overwrite by adding a numeric suffix such as `_1` or `_2` when the requested file already exists.
 
-GPU Inventory Summary
-##################################################
+## Requirements
 
-Invalid LID number or Mcast LID found 
-##################################################
+- Python 3.8 or newer
+- pandas
+- openpyxl
+- Windows Command Prompt or PowerShell is the primary tested environment
+- This script may not work in MAC & Linux Server. Because my labtop is Window, so i...If you want, you can develop it for Linux/Mac
 
-LinkDowned Counters > 0 
-##################################################
+Install the required Python packages:
 
-XmitDidscard Counters > 0 
-##################################################
-
-Port FEC Uncorrectable Counters 
-##################################################
-
-Buffer overrun Counters > 0 
-##################################################
-
-Max Retransmission_rate : > 500 
-##################################################
-
-Raw BER Counters > 1e-5 (Qt :{len(df_Raw_ber.index)}) 
-##################################################
-
-Effective BER Counters > 1e-13 
-##################################################
-
-Symbol BER Counters > 1e-13, or Err > 0 
-##################################################
-
-Congestion Indexes > 10
-##################################################
-
-Lost Bandwidth Summary 
-##################################################
-
-Lost Bandwidth Summary 
-##################################################
-
-#######################################################################
-###########   Fabric link Rate in details + Lost Bandwidth   ##########
-####################################################################### 
-
-(Tier1 & Tier4) Switch -> Servers By RX Bandwidth 
-##################################################
-
- (Tier1 & Tier4) Servers -> Switch By TX Bandwidth   
-##################################################
-
- (Tier2 & Tier3) Switch <-> Switch By RX Bandwidth
-##################################################
-
- (Tier2 & Tier3) Switch <-> Switch By TX Bandwidth
-##################################################
-
- All_port_TX_RX_Bandwidth Bandwidth
-##################################################
-
-IB Device temperature > 70c or IB Switch Asic temperature > 70c 
-##################################################
-
-3rd Party Cable used 
-##################################################
-
-Cable Temperature > 70c
-##################################################
-
-PSU problem regarding (IsPresent, IsFRU, DCState, AlertState )
-##################################################
-
-APort Symmetry Check finished with errors 
-##################################################
-
- Links Speed Check finished with errors 
-##################################################
-
-Rail Optimized Topology Validation ended with
-##################################################
-
-Saving to Excel file:
-##################################################
-
+```powershell
+python -m pip install pandas openpyxl
 ```
 
-## Running environment
- I've coded it based on Window CMD. It works well in Window CMD
- It may not work MAC or Linux server. The reason why,, because my labtop is Window.
- If there is a request from MAC/Linux users, i can make it.
+Check the installed versions:
 
-## How to run
-
-
- ### step.1 : please run & collect ibdiagnet files. (refer to below 2 running commands as an example)
-```
-#ibdiagnet -r -P all=1 --extended_speeds all --pm_per_lane --get_phy_info --get_cable_info 
-#tar cvf ibdiagnet_A.tar /var/tmp/ibdiagnet2/
-
-#ibdiagnet -r --pc --pm_pause_time 100 -P all=1 --extended_speeds all --pm_per_lane --reset_phy_info  --get_phy_info  --get_cable_info 
-#tar cvf ibdiagnet_B.tar /var/tmp/ibdiagnet2/
+```powershell
+python --version
+python -m pip show pandas openpyxl
 ```
 
- ### step.2 : You must install python related libararies in your Window to run the script.
+## Collecting ibdiagnet data
 
-> From my Window Laptop
-     
-```
-[root@My_test_lab ~]# python --version
-Python 3.8.0
+A basic collection suitable for inventory, PM counters, extended-speed counters, BER, and cable checks is:
 
-[root@My_test_lab ~]# pip3 install pandas
-[root@My_test_lab ~]# pip3 install openpyxl 
-[root@My_test_lab ~]# pip3 list
-
-[root@My_test_lab ~]#pip3 list
-Package         Version
---------------- -----------
-et-xmlfile       1.1.0
-numpy            1.24.4
-openpyxl         3.1.3   <=========
-pandas           2.0.3   <=========
-pip              24.1
-PyQt5            5.15.10
-PyQt5-Qt5        5.15.2
-PyQt5-sip        12.13.0
-XlsxWriter       3.2.0   <=======
+```bash
+ibdiagnet -r -P all=1 \
+  --extended_speeds all \
+  --pm_per_lane \
+  --get_phy_info \
+  --get_cable_info
 ```
 
- ### step.3 : Open up Window CMD. Then run the command referring to below examples & adding useful several parameters. 
+For lost-bandwidth and TX/RX rate calculations, collect two PM samples with `--pm_pause_time`:
 
+```bash
+ibdiagnet -r \
+  --pc \
+  --reset_phy_info \
+  --pm_pause_time 600 \
+  -P all=1 \
+  --extended_speeds all \
+  --pm_per_lane \
+  --get_phy_info \
+  --get_cable_info
 ```
-C:\Python_3.13.3\Study>python check_ib_link_status_v39.py -h
-usage: usage: check_ib_link_status_v39.py [-h] -i IBDIAGNET_FOLDER [-o OUTPUT_FILE] [-n TOP_N] [-s] [-c] [-d] [-a] [-v]
 
-Examples (How to run) > :
+Archive the generated directory if it must be transferred to another system:
 
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -o  C:\Python39\study\save_backdata.xlsx
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -s -o C:\Python39\study\save_backdata.xlsx
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -a -n 20 -c -s -o C:\Python39\study\save_backdata.xlsx
-  #python check_ib_link_status_v37.py -i ./tem/ibdiagnet2 -d
-
-options:
-  -h, --help            show this help message and exit
-  -i, --ibdiagnet-folder IBDIAGNET_FOLDER
-                        read data from ibdiagnet2 output folder
-  -o, --output-file OUTPUT_FILE
-                        write results to xlsx file
-  -n, --top-n TOP_N     print first N entries(by default, n = 10)
-  -s, --skip-lid-checking
-                        Skip Invalid LID & Mcast LID checking
-  -c, --skip-cable-checking
-                        reading ibdiagnet2.cables. if file size big, it takes much time. So, To skip cables checking
-  -d, --debug           Collecting all row data to a csv format file for debugging purpose
-  -a, --all             Display all TX/RX Bandwidth & Lost Bandwidth in details
-  -v, --version         print current script version
+```bash
+tar -czf ibdiagnet2-output.tar.gz /var/tmp/ibdiagnet2/
 ```
-## Script running output
 
-<img width="1060" height="1870" alt="Image" src="https://github.com/user-attachments/assets/520bab03-0f91-4566-871e-0d5c59c6dbf6" />
+Collection options determine which checks are available. For example:
+
+- `--pm_pause_time`: enables lost-bandwidth and TX/RX bandwidth calculations.
+- `--extended_speeds all`: supplies extended speed and FEC counters when supported.
+- `--pm_per_lane`: supplies per-lane PM data when supported.
+- `--get_phy_info`: supplies BER and additional physical-layer information.
+- `--get_cable_info`: creates cable data used by third-party and temperature checks.
+- Routing and rail-validation options are required if those warnings should appear in the ibdiagnet log.
+
+## Usage
+
+```text
+python check_ib_link_status_v49.py -i IBDIAGNET_FOLDER [options]
+```
+
+### Options
+
+| Option | Description |
+|---|---|
+| `-i`, `--ibdiagnet-folder` | Required. Path to the extracted `ibdiagnet2` output directory. |
+| `-o`, `--output-file` | Write non-empty findings to an `.xlsx` workbook. |
+| `-n`, `--top-n` | Maximum console rows per result section. Default: `10`. |
+| `-s`, `--skip-lid-checking` | Skip invalid LID and multicast LID validation. |
+| `-c`, `--skip-cable-checking` | Do not read or parse `ibdiagnet2.cables`. Recommended for very large cable files when cable checks are unnecessary. |
+| `-d`, `--debug` | Write the merged PM data to `For_debugging_data_all`. |
+| `-a`, `--all` | Display detailed server/switch TX/RX bandwidth and lost-bandwidth tables. Requires `--pm_pause_time` in the original ibdiagnet command. |
+| `-v`, `--version` | Print the script version string and exit. |
+
+### Examples
+
+Analyze a collection and print the first 10 rows in each section:
+
+```powershell
+python check_ib_link_status_v49.py -i .\ibdiagnet2
+```
+
+Print the first 20 rows:
+
+```powershell
+python check_ib_link_status_v49.py -i .\ibdiagnet2 -n 20
+```
+
+Skip cable parsing for a large fabric:
+
+```powershell
+python check_ib_link_status_v49.py -i .\ibdiagnet2 -c
+```
+
+Skip cable and LID checks:
+
+```powershell
+python check_ib_link_status_v49.py -i .\ibdiagnet2 -c -s
+```
+
+Display detailed bandwidth tables and save results to Excel:
+
+```powershell
+python check_ib_link_status_v49.py `
+  -i .\ibdiagnet2 `
+  -a `
+  -n 20 `
+  -o C:\Reports\ib_fabric_status.xlsx
+```
+
+If `ib_fabric_status.xlsx` already exists, the script uses `ib_fabric_status_1.xlsx`, then `_2`, and so on. Existing workbooks are not overwritten.
+
+## Input files
+
+The following files are read from the directory supplied with `-i`:
+
+| File | Status | Used for |
+|---|---|---|
+| `ibdiagnet2.log` | Required | Original ibdiagnet command, APort symmetry, speed/width, rail topology, and PCI degradation warnings. |
+| `ibdiagnet2.net_dump` | Required | Active link mapping, source/destination devices, GUIDs, ports, width, and speed. |
+| `ibdiagnet2.db_csv` | Required | PM counters, switch/HCA/GPU inventory, temperature, PSU, and other database sections. |
+| `ibdiagnet2.net_dump_ext` | Optional | Raw, effective, and symbol BER information. Missing data skips BER checks. |
+| `ibdiagnet2.ibnetdiscover` | Optional | Invalid LID/multicast LID and remote-peer-not-responding checks. |
+| `ibdiagnet2.cables` | Optional | Cable vendor, part number, serial number, and temperature. Not read when `-c` is used. |
+
+The input folder, `ibdiagnet2.log`, `ibdiagnet2.net_dump`, and `ibdiagnet2.db_csv` are fundamental inputs. If one of these is unavailable or cannot be used, the script stops with a stage-aware fatal error.
+
+## Checks and thresholds
+
+### Inventory
+
+- IB switch/ASIC quantity, PSID/model mapping, and firmware versions
+- HCA quantity, PSID/model mapping, and firmware versions
+- GPU inventory when matching GPU node records are available
+
+### PM and link counters
+
+| Check | Threshold or behavior |
+|---|---|
+| Link down | `LinkDownedCounter > 0` |
+| Transmit discard | `PortXmitDiscards > 0` |
+| FEC uncorrectable | `PortFECUncorrectableBlockCounter > 0` when extended-speed data is available |
+| Buffer overrun | `ExcessiveBufferOverrunErrors != 0` |
+| VL15 drop | Prefer `VL15DroppedExt`; fall back to `VL15Dropped`; report values `> 10` |
+| Maximum retransmission rate | `max_retransmission_rate > 500` |
+| Congestion index | `PortXmitWaitExt / PortXmitPktsExtended >= 10` |
+
+Each counter is evaluated independently. For example, if `PortXmitWaitExt` is absent, the congestion and dependent bandwidth checks can be skipped while link-down, discard, buffer-overrun, VL15, and other available checks continue.
+
+### BER
+
+- Effective BER: `> 1e-13`
+- Symbol BER: `> 1e-13`
+- Legacy symbol error count: `> 0`
+- Raw BER: `> 1e-5` for Symbol BER format, or `> 2e-5` for the legacy Symbol Err format
+
+### Bandwidth
+
+When the original collection command contains `--pm_pause_time`, the script calculates:
+
+- Lost bandwidth in Gbps
+- Current TX and RX bandwidth in Gbps
+- Server-to-switch and switch-to-server bandwidth
+- Switch-to-switch TX/RX bandwidth
+- All-port TX/RX bandwidth when `-a` is selected
+
+### Hardware and fabric validation
+
+- IB device or switch ASIC temperature at 70°C or higher
+- Third-party cable vendor detection
+- Cable temperature above 70°C
+- PSU problems: missing/non-FRU PSU, DC error, or active alert
+- Invalid LID and multicast LID values
+- APort symmetry errors
+- Link speed/width errors
+- Rail-optimized topology warnings
+- PCI degradation warnings
+- Ports that are UP while the remote peer is not responding
+
+## Console behavior
+
+Only non-empty findings are normally printed, limited by `--top-n`. The final section always reports completion status:
+
+```text
+Check completion summary:
+##################################################
+All applicable check items were available; no checks were skipped.
+```
+
+If data is missing or partially invalid, the script continues with other available checks and reports what was skipped or adjusted:
+
+```text
+Check completion summary:
+##################################################
+The script continued with all available checks.
+The following unavailable or partial checks were skipped/adjusted:
+1. Check: Congestion index check
+   Missing/problem item(s): PortXmitWaitExt
+   Result: Required extended PM counter(s) were not found; this check was skipped.
+```
+
+Fatal errors include the processing stage and reason:
+
+```text
+ERROR: Script execution stopped.
+Stage: loading and parsing ibdiagnet2.db_csv tables
+Item: ibdiagnet2.db_csv
+Reason: Required file not found: ...
+```
+
+## Excel output
+
+Use `-o` to create an Excel workbook. Sheets are created only when the corresponding result contains data.
+
+Possible sheets include:
+
+- `IB_Switch_Summary`
+- `HCA_Inventory_Summary`
+- `GPU_Inventory_Summary`
+- `Invalid LID & Mcast checking`
+- `Flapping_Links`
+- `Output_Didscard_Links`
+- `FEC_Uncorrectable_Links`
+- `Buf_Overrun_Links`
+- `VL15_Drop`
+- `Congested_Links`
+- `Max_Retransmission_rate`
+- `Effective_BER_Links`
+- `Symbol_BER_Links`
+- `Raw_BER_Links`
+- `Lost_Bandwidth`
+- `Server_Tx_Bandwidth`
+- `Server_Rx_Bandwidth`
+- `Switch_Tx_Bandwidth`
+- `Switch_Rx_Bandwidth`
+- `All_port_TX_RX_Bandwidth`
+- `IB device and Asic temperature`
+- `3rd party cables`
+- `Cable Temperature >70c`
+- `PSU problem regarding`
+- `APort_Symmetry_Errors`
+- `Links_Speed_Width_Errors`
+- `PCI_degradation_warnings`
+- `Rail_topology_warnings`
+- `Remote_peer_not_responding`
+
+## Large-fabric recommendations
+
+- Use `-c` if `ibdiagnet2.cables` is very large and cable analysis is not required. In v49 the file is completely bypassed.
+- Use `-s` if LID validation is not needed.
+- Keep the default `-n 10` for concise console output; increasing `-n` affects display volume, not the number of rows written to Excel.
+- Large `ibdiagnet2.db_csv`, `net_dump`, cable, and routing files can require substantial memory and several minutes of processing.
+- Use `-d` only for troubleshooting because the debug PM export may be large.
+
+## Screenshot
+
+<img width="1060" height="1870" alt="Example script output" src="https://github.com/user-attachments/assets/520bab03-0f91-4566-871e-0d5c59c6dbf6" />
 
