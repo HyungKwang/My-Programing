@@ -23,6 +23,7 @@ The script does not run `ibdiagnet` itself. Collect the diagnostic files on the 
 - pandas
 - openpyxl
 - Windows Command Prompt or PowerShell is the primary tested environment
+- This script may not work in MAC & Linux Server. Because my labtop is Window, so i...If you want, you can develop it for Linux/Mac
 
 Install the required Python packages:
 
@@ -276,16 +277,6 @@ Possible sheets include:
 - Keep the default `-n 10` for concise console output; increasing `-n` affects display volume, not the number of rows written to Excel.
 - Large `ibdiagnet2.db_csv`, `net_dump`, cable, and routing files can require substantial memory and several minutes of processing.
 - Use `-d` only for troubleshooting because the debug PM export may be large.
-
-## Cable parsing behavior
-
-Cable fields are split only at the first colon, so values containing colons are preserved. For example:
-
-```text
-SN: MT24:4NT05981
-```
-
-is parsed as the key `SN` and value `MT24:4NT05981`. If an individual cable block is malformed, only that block is skipped and the device GUID, port, and reason are included in the final completion summary.
 
 ## Screenshot
 

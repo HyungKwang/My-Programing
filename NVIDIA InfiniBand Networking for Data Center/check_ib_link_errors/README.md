@@ -38,9 +38,9 @@ python --version
 python -m pip show pandas openpyxl
 ```
 
-## Collecting ibdiagnet data
+## Collecting ibdiagnet data. 2 methods
 
-A basic collection suitable for inventory, PM counters, extended-speed counters, BER, and cable checks is:
+1. A basic collection suitable for inventory, PM counters, extended-speed counters, BER, and cable checks is:
 
 ```bash
 ibdiagnet -r -P all=1 \
@@ -48,9 +48,11 @@ ibdiagnet -r -P all=1 \
   --pm_per_lane \
   --get_phy_info \
   --get_cable_info
+
+tar -czf ibdiagnet2_A.tar.gz /var/tmp/ibdiagnet2/
 ```
 
-For lost-bandwidth and TX/RX rate calculations, collect two PM samples with `--pm_pause_time`:
+2. For lost-bandwidth and TX/RX rate calculations, collect two PM samples with `--pm_pause_time`:
 
 ```bash
 ibdiagnet -r \
@@ -62,12 +64,8 @@ ibdiagnet -r \
   --pm_per_lane \
   --get_phy_info \
   --get_cable_info
-```
 
-Archive the generated directory if it must be transferred to another system:
-
-```bash
-tar -czf ibdiagnet2-output.tar.gz /var/tmp/ibdiagnet2/
+tar -czf ibdiagnet2_B.tar.gz /var/tmp/ibdiagnet2/
 ```
 
 Collection options determine which checks are available. For example:
